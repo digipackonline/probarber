@@ -1,0 +1,21 @@
+{
+  "name": "BarberPro - Gestión Premium de Barberías",
+  "short_name": "BarberPro",
+  "description": "Sistema de gestión integral para barberías",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "es",
+  "dir": "ltr"
+}
