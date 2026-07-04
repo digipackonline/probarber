@@ -78,6 +78,7 @@ export default function RegisterPage() {
 
     try {
       // 1. Create auth user
+      console.log("STEP 1");
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -89,16 +90,23 @@ export default function RegisterPage() {
         }
       });
 
+      console.log(authData);
+      console.error(authError);
+
       if (authError) throw authError;
       if (!authData.user) throw new Error('Error al crear usuario');
 
       // 2. Create tenant
+      console.log("STEP 2 create tenant");
       const { data: tenant, error: tenantError } = await supabase.rpc('create_tenant', {
         p_name: formData.barbershopName,
         p_slug: formData.barbershopSlug,
         p_email: formData.email,
         p_created_by: authData.user.id
       });
+
+      console.log(tenant);
+      console.error(tenantError);
 
       if (tenantError) {
         // If tenant creation fails, we still have the user - they can retry later
@@ -122,7 +130,9 @@ export default function RegisterPage() {
         const tenantId = tenant?.[0]?.id || (await supabase.from('tenants').select('id').eq('created_by', authData.user.id).single()).data?.id;
 
         if (tenantId) {
-          await supabase.from('profiles').update({ active_tenant_id: tenantId }).eq('id', authData.user.id);
+          const profileUpdate = await supabase.from('profiles').update({ active_tenant_id: tenantId }).eq('id', authData.user.id);
+          console.log(profileUpdate);
+          console.error(profileUpdate.error);
         }
       }
 
